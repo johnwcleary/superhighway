@@ -1,0 +1,26 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# wrangler
+.wrangler/
+.dev.vars*
+
+# lighthouse ci
+.lighthouseci/
+
+# logs
+*.log
+
+# env
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# local tooling
+.claude/
