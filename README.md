@@ -83,6 +83,13 @@ Production deploys come from Cloudflare Workers Builds (the dashboard's Git
 integration) on every push to `main`, not from GitHub Actions. The Worker is
 configured in `wrangler.jsonc` as an assets-only Worker serving `dist/`.
 
+Workers Builds settings: build command `pnpm build`, deploy command
+`npx wrangler deploy`, root `/`, production branch `main`. Node and pnpm
+versions come from `.nvmrc` and `package.json#packageManager`.
+
+The one-time Cloudflare, DNS and email cutover is in
+[`docs/RUNBOOK.md`](docs/RUNBOOK.md).
+
 ## Layout
 
 ```
