@@ -47,9 +47,12 @@ import { site } from '../site';
     white-space: nowrap;
   }
 
+  /* Wider screens: hang the (scaled-down) block off the right margin so it
+     lines up with the header links and the about/services text column. */
   @media (min-width: 768px) {
     .hero {
       padding-top: 5.5rem;
+      text-align: right;
     }
   }
 
