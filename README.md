@@ -96,10 +96,10 @@ The one-time Cloudflare, DNS and email cutover is in
 public/            static files copied as-is: font, wordmark, favicon, og.png,
                    robots.txt, _redirects
 scripts/           make-og.mjs: generates public/og.png (no dependencies)
-src/site.ts        name, URL, contact details, social links (one place)
-src/components/    Header, Hero, About, Services, Contact, Footer
+src/site.ts        name, URL, contact details, social links, portfolio
+src/components/    Header, Hero, Trail, About, Services, Contact, Footer
 src/layouts/       Base.astro: <head> with meta, Open Graph, JSON-LD
-src/pages/         index.astro, 404.astro
+src/pages/         index.astro, portfolio.astro, 404.astro
 src/styles/        global.css: tokens, font-face, base type
 astro.config.mjs   static output, site URL, sitemap
 lighthouserc.json  Lighthouse CI thresholds (≥ 95 in all four categories)

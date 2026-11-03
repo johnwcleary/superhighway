@@ -1,0 +1,142 @@
+---
+/*
+ * A dotted line that loops down the empty left side of the page beside
+ * about/services and ends in a small triangle over "Get in Touch." As you
+ * scroll it draws itself along its length, keeping its tip just below the
+ * middle of the screen.
+ *
+ * The path is a prolate trochoid (a point on a rolling circle, which makes
+ * loops) drifting slightly left, computed here at build time. Coordinates
+ * are in a 100 × 100 box stretched over the wrapper, so x is roughly vw.
+ */
+const loops = 3;
+const rx = 8; // loop width
+const ry = 12; // loop height; more than 100 / (2π · loops) so it actually loops
+const centre = (s: number) => 25 - 4 * s + 3 * Math.sin(Math.PI * s);
+
+const steps = 360;
+const points = Array.from({ length: steps + 1 }, (_, i) => {
+  const s = i / steps;
+  const theta = 2 * Math.PI * loops * s;
+  return [centre(s) + rx * Math.cos(theta), 100 * s + ry * Math.sin(theta)];
+});
+const d = points.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(2)} ${y.toFixed(2)}`).join('');
+const endX = points.at(-1)![0];
+---
+
+<div class="trail" style={`--end-x: ${endX.toFixed(2)}%`}>
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <!-- The dots show only where this copy of the line is drawn, so the
+         line reveals along its own length rather than top to bottom. -->
+    <mask id="trail-draw" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120">
+      <path class="draw" d={d} pathLength="1"></path>
+    </mask>
+    <path class="dots" d={d} mask="url(#trail-draw)"></path>
+  </svg>
+  <span class="tip" aria-hidden="true"></span>
+  <slot />
+</div>
+
+<style>
+  /* 1 = nothing drawn, 0 = fully drawn. Registered so it can animate. */
+  @property --draw {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+
+  .trail {
+    position: relative;
+    timeline-scope: --trail;
+  }
+
+  /* Phones have no empty column for it, so it only shows on wider screens. */
+  svg,
+  .tip {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    svg {
+      display: block;
+      position: absolute;
+      top: 3rem;
+      left: 0;
+      width: 100%;
+      /* Run past the wrapper to just above "Get in Touch." */
+      height: calc(100% - 3rem + 4.4rem);
+      overflow: visible;
+      pointer-events: none;
+      view-timeline-name: --trail;
+    }
+
+    /* Small solid triangle; its point sits on the end of the line. */
+    .tip {
+      display: block;
+      position: absolute;
+      top: calc(100% + 4.4rem);
+      left: var(--end-x);
+      width: 11px;
+      height: 9px;
+      background: var(--fg);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform: translate(-50%, -100%);
+      pointer-events: none;
+    }
+  }
+
+  path {
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  .dots {
+    stroke: var(--fg);
+    stroke-width: 2.5px;
+    stroke-dasharray: 0 9px;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.85;
+  }
+
+  .draw {
+    stroke: #fff;
+    stroke-width: 1.4;
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: var(--draw);
+  }
+
+  /* Tie the drawing to the scroll: the tip tracks 60% of the way down the
+     viewport, and the triangle lands as the line reaches it. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      svg {
+        animation: draw linear both;
+        animation-timeline: --trail;
+        animation-range: cover 40vh exit 40vh;
+      }
+
+      .tip {
+        animation: tip linear both;
+        animation-timeline: --trail;
+        animation-range: exit 36vh exit 40vh;
+      }
+    }
+  }
+
+  @keyframes draw {
+    from {
+      --draw: 1;
+    }
+
+    to {
+      --draw: 0;
+    }
+  }
+
+  @keyframes tip {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -100%) scale(0.4);
+    }
+  }
+</style>
