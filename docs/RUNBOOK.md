@@ -15,25 +15,21 @@ step 3.
 Captured with `dig` on 2026-11-03. Two things differ from the original plan,
 and the steps below account for both:
 
-1. **The two domains use different email providers.** `superhighway.fm` is on
-   **Google Workspace**. `johnwilliamcleary.com` is on **Microsoft 365**, the
-   GoDaddy-provisioned kind (MX `…mail.protection.outlook.com`, verification
-   `NETORGFT11483937.onmicrosoft.com`, SPF `include:secureserver.net`).
-2. **Neither domain's DNS is at Squarespace Domains.**
+1. **Only `john@superhighway.fm` (Google Workspace) is used for email.**
+   `johnwilliamcleary.com` still has leftover Microsoft 365 records from
+   GoDaddy (MX `…mail.protection.outlook.com`, TXT
+   `NETORGFT11483937.onmicrosoft.com`, SPF `include:secureserver.net`). That
+   mailbox isn't needed, so step 2 removes those records and marks the domain
+   as one that never sends mail.
+2. **Both domains are managed in GoDaddy**, not Squarespace Domains.
 
 | | superhighway.fm | johnwilliamcleary.com |
 |---|---|---|
-| Registrar (WHOIS) | Instra Corporation | GoDaddy |
+| Managed at | GoDaddy (WHOIS lists Instra Corporation as the registrar) | GoDaddy |
 | Nameservers today | GoDaddy (`ns57`/`ns58.domaincontrol.com`) | Squarespace (`connect1`/`connect2.squarespacedns.com`) |
-| Email | Google Workspace | Microsoft 365 (via GoDaddy) |
+| Email | Google Workspace: `john@superhighway.fm` | none (old Microsoft 365 records removed in step 2) |
 | Website records | Squarespace `A` ×4, `www` → `ext-sq.squarespace.com` | same |
 | DNSSEC | off | off |
-
-> **TODO(john):** confirm where you log in to manage `superhighway.fm`. Its DNS
-> is on GoDaddy, so it's most likely in your GoDaddy account even though WHOIS
-> names Instra. Also confirm whether the Microsoft 365 mailbox on
-> `johnwilliamcleary.com` is still in use. The steps below keep it working
-> either way.
 
 ---
 
@@ -86,29 +82,34 @@ Do this for **`superhighway.fm`** first, then **`johnwilliamcleary.com`**.
 - [ ] Google Workspace has no DKIM record (`google._domainkey`) on this
       domain today. That doesn't block anything here; see step 10.
 
-### johnwilliamcleary.com: email records that must exist before step 3
+### johnwilliamcleary.com: no email
 
-| Type | Name | Content | Priority | Proxy |
-|---|---|---|---|---|
-| MX | `@` | `johnwilliamcleary-com.mail.protection.outlook.com` | 0 | DNS only |
-| TXT | `@` | `NETORGFT11483937.onmicrosoft.com` | | |
-| TXT | `@` | `v=spf1 include:secureserver.net -all` | | |
+Nothing receives mail on this domain any more.
 
-These are Microsoft 365 records, not Google. If you've stopped using that
-mailbox you could drop them, but keeping them costs nothing.
+- [ ] **Delete** the old Microsoft 365 records if the scan imported them:
+  - `MX @ johnwilliamcleary-com.mail.protection.outlook.com`
+  - `TXT @ NETORGFT11483937.onmicrosoft.com`
+  - `TXT @ v=spf1 include:secureserver.net -all`
+- [ ] **Add** two records that say this domain never sends mail. They stop
+      anyone sending spoofed email as `@johnwilliamcleary.com`:
+
+  | Type | Name | Content |
+  |---|---|---|
+  | TXT | `@` | `v=spf1 -all` |
+  | TXT | `_dmarc` | `v=DMARC1; p=reject;` |
 
 ## 3. Point both domains at Cloudflare's nameservers
 
-Only do this once step 2's email records look right in both zones.
+Only do this once `superhighway.fm`'s email records from step 2 look right.
 
 - [ ] **johnwilliamcleary.com** (registered at **GoDaddy**): GoDaddy → **My
       Products** → **Domains** → `johnwilliamcleary.com` → **DNS** →
       **Nameservers** → **Change nameservers** → **I'll use my own
       nameservers**. Replace the two `connect*.squarespacedns.com` entries with
       the two Cloudflare nameservers for this zone → **Save**.
-- [ ] **superhighway.fm**: same flow in the account that manages it (see the
-      TODO above; most likely GoDaddy). Replace `ns57`/`ns58.domaincontrol.com`
-      with the two Cloudflare nameservers for this zone.
+- [ ] **superhighway.fm** (also in **GoDaddy**): same flow. Replace
+      `ns57`/`ns58.domaincontrol.com` with the two Cloudflare nameservers for
+      this zone.
 - [ ] Don't change anything else at the registrar. In particular, don't remove
       the domains from GoDaddy.
 - [ ] Wait for Cloudflare to email "**… is now active on Cloudflare**", or
@@ -189,8 +190,8 @@ In the **superhighway.fm** zone:
 In the **johnwilliamcleary.com** zone:
 
 - [ ] **DNS → Records:** delete the Squarespace website records: the four
-      `A @` records and `CNAME www → ext-sq.squarespace.com`. Leave the MX and
-      TXT records.
+      `A @` records and `CNAME www → ext-sq.squarespace.com`. Keep the two
+      TXT records added in step 2.
 - [ ] Add two placeholder records, both **Proxied** (orange cloud):
 
   | Type | Name | Content | Proxy |
@@ -252,11 +253,7 @@ Expected (order may vary):
 dig MX johnwilliamcleary.com +short
 ```
 
-Expected:
-
-```
-0 johnwilliamcleary-com.mail.protection.outlook.com.
-```
+Expected: **no output**. The domain doesn't receive mail.
 
 ```bash
 dig TXT superhighway.fm +short
@@ -326,18 +323,15 @@ shows the query string is preserved.
 - [ ] Open <https://superhighway.fm> in a browser and on your phone. Check that
       the padlock is valid and the phone/email links work.
 
-## 8. Test email on both domains
+## 8. Test email
 
-- [ ] **superhighway.fm (Google Workspace):** from a personal address (Gmail,
-      iCloud, …) send to `john@superhighway.fm`. Confirm it arrives, then
-      reply from `john@superhighway.fm` and confirm the reply arrives.
+- [ ] From a personal address (Gmail, iCloud, …) send to `john@superhighway.fm`.
+      Confirm it arrives, then reply from `john@superhighway.fm` and confirm
+      the reply arrives.
 - [ ] In the received reply, open **Show original** (Gmail) or the equivalent
       and check `SPF: PASS` and `DMARC: PASS`.
-- [ ] **johnwilliamcleary.com (Microsoft 365):** if you still use an address on
-      this domain, do the same round trip from Outlook. If you don't, skip
-      this.
-- [ ] If anything bounces, compare the zone's MX/TXT records with the tables
-      in step 2. Nothing else in this runbook touches email.
+- [ ] If anything bounces, compare the `superhighway.fm` MX/TXT records with
+      the table in step 2. Nothing else in this runbook touches email.
 
 ## 9. Cancel the Squarespace website subscription
 
@@ -345,11 +339,12 @@ Only do this once step 7 passes and step 8 shows mail flowing.
 
 - [ ] Squarespace → the site → **Settings → Billing → Subscriptions** → cancel
       the **website** plan.
-- [ ] Nothing about the domains needs to change at Squarespace. Neither domain
-      is registered there: `johnwilliamcleary.com` is at GoDaddy, and
-      `superhighway.fm` is at GoDaddy/Instra (see the TODO at the top). Both
-      domains' DNS is now on Cloudflare, so Squarespace's DNS records stop
-      mattering.
+- [ ] Nothing about the domains needs to change at Squarespace. Both are
+      managed in GoDaddy and their DNS is now on Cloudflare, so Squarespace's
+      DNS records stop mattering.
+- [ ] If GoDaddy still bills you for the Microsoft 365 plan on
+      `johnwilliamcleary.com`, you can cancel it. Nothing uses it, and its DNS
+      records are gone.
 - [ ] Before cancelling anything else, check where **Google Workspace** is
       billed (Google Admin → **Billing**). If it was bought through a reseller
       (GoDaddy or Squarespace), keep that subscription. Only the website plan
@@ -366,14 +361,9 @@ Only do this once step 7 passes and step 8 shows mail flowing.
       auth code from the current registrar first. A `.com` can't move within 60
       days of registration or a previous transfer. The dashboard shows whether
       each domain is eligible.
-- [ ] **A `hi@superhighway.fm` address without another Workspace seat:**
-      **don't use Cloudflare Email Routing for this.** Email Routing needs
-      Cloudflare's own MX records on the domain, which would replace Google's
-      and break Workspace mail for `superhighway.fm`. Instead, add `hi@` as an
-      **alias** on your existing Workspace user (Google Admin → **Users** → you
-      → **Alternate email addresses**). Aliases are free, up to 30 per user. Or
-      create a free Google Group with that address. Email Routing would only
-      suit a domain with no other mail provider.
+- **Don't enable Cloudflare Email Routing on `superhighway.fm`.** It
+  needs Cloudflare's own MX records, which would replace Google's and break
+  `john@superhighway.fm`.
 - [ ] **Add DKIM for superhighway.fm:** Google Admin → **Apps → Google
       Workspace → Gmail → Authenticate email** → generate a key → add the
       `google._domainkey` TXT record in Cloudflare → **Start authentication**.
