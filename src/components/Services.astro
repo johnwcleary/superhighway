@@ -1,0 +1,24 @@
+---
+const services = [
+  'music strategy for brands & content creators',
+  'artist & brand partnerships',
+  'artist relations for labels/distributors',
+  'a&r',
+  'digital & sync strategy',
+  'music supervision & clearance',
+  'music direction',
+];
+---
+
+<section id="services" class="split services" aria-labelledby="services-title">
+  <h2 id="services-title" class="label">services</h2>
+  <ul class="body">
+    {services.map((s) => <li>{s}</li>)}
+  </ul>
+</section>
+
+<style>
+  .services {
+    padding-top: 3.25rem;
+  }
+</style>

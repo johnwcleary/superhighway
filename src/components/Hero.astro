@@ -1,0 +1,64 @@
+---
+import { site } from '../site';
+---
+
+<section class="hero display" aria-labelledby="hero-title">
+  <h1 id="hero-title">
+    <span class="l1">music consulting,</span>
+    <span class="l2">music for sync,</span>
+    <span class="l3">music strategy.</span>
+  </h1>
+  <p class="byline">by {site.person}</p>
+</section>
+
+<style>
+  /* Line sizes are proportional to the column, like the original; at a
+     --hero-scale of 1 each line fills it exactly. */
+  .hero {
+    --hero-scale: 0.88;
+    --hero-w: calc((100vw - var(--hero-start) - var(--gutter-end)) * var(--hero-scale));
+    padding: 4.6rem var(--gutter-end) 0 var(--hero-start);
+  }
+
+  h1 {
+    font-weight: 400;
+  }
+
+  h1 span {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .l1 {
+    font-size: calc(var(--hero-w) * 0.168);
+  }
+
+  .l2 {
+    font-size: calc(var(--hero-w) * 0.197);
+  }
+
+  .l3 {
+    font-size: calc(var(--hero-w) * 0.199);
+  }
+
+  .byline {
+    margin-top: 5rem;
+    font-size: calc(var(--hero-w) * 0.203);
+    white-space: nowrap;
+  }
+
+  /* Wider screens: hang the (scaled-down) block off the right margin so it
+     lines up with the header links and the about/services text column. */
+  @media (min-width: 768px) {
+    .hero {
+      padding-top: 5.5rem;
+      text-align: right;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding-top: 3.4rem;
+    }
+  }
+</style>

@@ -1,0 +1,10 @@
+# Workers static assets redirects.
+#
+# The www → apex redirect for superhighway.fm is NOT here. Workers static
+# assets only match on paths, and Cloudflare documents domain-level sources
+# (e.g. https://www.superhighway.fm/*) as unsupported:
+# https://developers.cloudflare.com/workers/static-assets/redirects/
+#
+# It's a Redirect Rule on the superhighway.fm zone instead; see docs/RUNBOOK.md.
+# Path redirects for this site go below, one per line:
+#   /old-path  /new-path  301

@@ -1,0 +1,54 @@
+---
+import { site, social } from '../site';
+---
+
+<header class="site-header">
+  <a class="wordmark display" href="/">{site.name}</a>
+  <nav aria-label="Social">
+    <ul>
+      {social.map((s) => <li><a href={s.href} rel="me">{s.label}</a></li>)}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.75rem var(--gutter-end) 0 var(--gutter);
+  }
+
+  .wordmark {
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  ul {
+    display: flex;
+    gap: 0.7rem;
+  }
+
+  nav a {
+    display: inline-block;
+    padding-block: 0.25rem;
+    text-decoration: none;
+  }
+
+  @media (min-width: 768px) {
+    .site-header {
+      padding-top: 3.25rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .site-header {
+      padding-top: 0.3rem;
+    }
+
+    .wordmark {
+      font-size: 1.48rem;
+    }
+  }
+</style>

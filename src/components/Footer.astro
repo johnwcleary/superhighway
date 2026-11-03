@@ -1,0 +1,67 @@
+---
+import { site } from '../site';
+---
+
+<footer class="site-footer">
+  <img
+    class="mark"
+    src="/wordmark-green.png"
+    alt={site.name}
+    width="300"
+    height="300"
+    loading="lazy"
+    decoding="async"
+  />
+  <address>
+    <a href={site.phone.href}>{site.phone.display}</a>
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+  </address>
+</footer>
+
+<style>
+  .site-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 7.5rem var(--gutter) 8.75rem;
+    text-align: center;
+  }
+
+  .mark {
+    width: min(53vw, 200px);
+  }
+
+  address {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.45rem;
+    font-size: 1rem;
+    font-style: normal;
+    line-height: 1.25;
+  }
+
+  /* Keep tap targets at least 24px tall without changing the visual rhythm much. */
+  a {
+    display: inline-block;
+    min-height: 24px;
+    padding-block: 0.125rem;
+    text-decoration: none;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer {
+      padding: 7.5vw var(--gutter) 5.5rem;
+    }
+
+    .mark {
+      width: 6.9vw;
+      min-width: 4.5rem;
+    }
+
+    address {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+    }
+  }
+</style>

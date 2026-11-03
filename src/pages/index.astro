@@ -1,15 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Services from '../components/Services.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Base>
-  <main class="wrap wrap--wide">
-    <h1 class="hero-line">superhighway</h1>
+<Base canonicalPath="/">
+  <Header />
+  <main>
+    <Hero />
+    <About />
+    <Services />
+    <Contact />
   </main>
+  <Footer />
 </Base>
-
-<style>
-  main {
-    padding-block: var(--space-section);
-  }
-</style>

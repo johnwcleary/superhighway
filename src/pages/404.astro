@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+---
+
+<Base title="not found · superhighway" noindex>
+  <Header />
+  <main>
+    <h1 class="display">404</h1>
+    <p>This page doesn’t exist. <a href="/">Back to superhighway</a>.</p>
+  </main>
+</Base>
+
+<style>
+  main {
+    padding: 4.6rem var(--gutter-end) 8rem var(--hero-start);
+  }
+
+  h1 {
+    font-size: clamp(6rem, 20vw, 16rem);
+  }
+
+  p {
+    margin-top: 2rem;
+    font-size: var(--step-text);
+  }
+</style>
