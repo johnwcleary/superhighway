@@ -12,9 +12,11 @@ import { site } from '../site';
 </section>
 
 <style>
-  /* Each line is sized to fill the column, like the original. */
+  /* Line sizes are proportional to the column, like the original; at a
+     --hero-scale of 1 each line fills it exactly. */
   .hero {
-    --hero-w: calc(100vw - var(--hero-start) - var(--gutter-end));
+    --hero-scale: 0.88;
+    --hero-w: calc((100vw - var(--hero-start) - var(--gutter-end)) * var(--hero-scale));
     padding: 4.6rem var(--gutter-end) 0 var(--hero-start);
   }
 
