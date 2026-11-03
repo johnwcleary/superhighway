@@ -2,50 +2,30 @@
 import { site } from '../site';
 ---
 
-<section id="contact" class="section wrap" aria-labelledby="contact-title">
-  <h2 id="contact-title" class="label">Get in Touch.</h2>
-  <div class="contact">
-    <img
-      class="mark"
-      src="/wordmark-green.png"
-      alt={site.name}
-      width="300"
-      height="300"
-      loading="lazy"
-      decoding="async"
-    />
-    <ul>
-      <li><a href={site.phone.href}>{site.phone.display}</a></li>
-      <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-    </ul>
-  </div>
+<section id="contact" class="contact" aria-label="Contact">
+  <h2 class="display"><a href={`mailto:${site.email}`}>Get in Touch.</a></h2>
 </section>
 
 <style>
   .contact {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 2rem 3rem;
+    padding: 10rem var(--gutter-end) 0 var(--hero-start);
   }
 
-  .mark {
-    width: clamp(9rem, 30vw, 12rem);
-  }
-
-  ul {
-    padding: 0;
-    list-style: none;
-  }
-
-  li + li {
-    margin-top: 0.5rem;
+  h2 {
+    font-size: 11.9vw;
   }
 
   a {
-    font-size: clamp(1.375rem, 1.1rem + 1.25vw, 2rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    overflow-wrap: anywhere;
+    text-underline-offset: 0.12em;
+  }
+
+  @media (min-width: 768px) {
+    .contact {
+      padding-top: 5.5rem;
+    }
+
+    h2 {
+      font-size: calc(1rem + 3.6vw);
+    }
   }
 </style>

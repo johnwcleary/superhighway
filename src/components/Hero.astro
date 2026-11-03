@@ -2,29 +2,58 @@
 import { site } from '../site';
 ---
 
-<section class="hero wrap" aria-labelledby="hero-title">
-  <h1 id="hero-title" class="hero-line">
-    <span>music consulting,</span>
-    <span>music for sync,</span>
-    <span>music strategy.</span>
+<section class="hero display" aria-labelledby="hero-title">
+  <h1 id="hero-title">
+    <span class="l1">music consulting,</span>
+    <span class="l2">music for sync,</span>
+    <span class="l3">music strategy.</span>
   </h1>
   <p class="byline">by {site.person}</p>
 </section>
 
 <style>
+  /* Each line is sized to fill the column, like the original. */
   .hero {
-    padding-block: clamp(3rem, 12vw, 9rem) var(--space-section);
+    --hero-w: calc(100vw - var(--hero-start) - var(--gutter-end));
+    padding: 4.6rem var(--gutter-end) 0 var(--hero-start);
+  }
+
+  h1 {
+    font-weight: 400;
   }
 
   h1 span {
     display: block;
+    white-space: nowrap;
+  }
+
+  .l1 {
+    font-size: calc(var(--hero-w) * 0.168);
+  }
+
+  .l2 {
+    font-size: calc(var(--hero-w) * 0.197);
+  }
+
+  .l3 {
+    font-size: calc(var(--hero-w) * 0.199);
   }
 
   .byline {
-    margin-top: clamp(1.25rem, 3vw, 2rem);
-    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: var(--accent-ink);
+    margin-top: 5rem;
+    font-size: calc(var(--hero-w) * 0.203);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      padding-top: 5.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding-top: 3.4rem;
+    }
   }
 </style>

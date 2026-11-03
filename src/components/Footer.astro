@@ -1,36 +1,67 @@
 ---
-import { social } from '../site';
+import { site } from '../site';
 ---
 
-<footer class="site-footer wrap">
-  <ul>
-    {social.map((s) => <li><a href={s.href} rel="me">{s.label}</a></li>)}
-  </ul>
+<footer class="site-footer">
+  <img
+    class="mark"
+    src="/wordmark-green.png"
+    alt={site.name}
+    width="300"
+    height="300"
+    loading="lazy"
+    decoding="async"
+  />
+  <address>
+    <a href={site.phone.href}>{site.phone.display}</a>
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+  </address>
 </footer>
 
 <style>
   .site-footer {
-    padding-block: 2.5rem 3rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  ul {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    padding: 0;
-    list-style: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 7.5rem var(--gutter) 8.75rem;
+    text-align: center;
   }
 
+  .mark {
+    width: min(53vw, 200px);
+  }
+
+  address {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.45rem;
+    font-size: 1rem;
+    font-style: normal;
+    line-height: 1.25;
+  }
+
+  /* Keep tap targets at least 24px tall without changing the visual rhythm much. */
   a {
     display: inline-block;
-    padding-block: 0.25rem;
-    color: var(--muted);
+    min-height: 24px;
+    padding-block: 0.125rem;
     text-decoration: none;
   }
 
-  a:hover {
-    color: var(--accent-ink);
-    text-decoration: underline;
+  @media (min-width: 768px) {
+    .site-footer {
+      padding: 7.5vw var(--gutter) 5.5rem;
+    }
+
+    .mark {
+      width: 6.9vw;
+      min-width: 4.5rem;
+    }
+
+    address {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+    }
   }
 </style>

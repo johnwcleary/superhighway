@@ -1,7 +1,7 @@
-<section id="about" class="section wrap" aria-labelledby="about-title">
+<section id="about" class="split about" aria-labelledby="about-title">
   <h2 id="about-title" class="label">about</h2>
-  <div class="prose">
-    <p class="lede">I have spent 15 years on the intersection of music &amp; internet culture.</p>
+  <div class="body">
+    <p>I have spent 15 years on the intersection of music &amp; internet culture.</p>
     <p>
       My experience is reinforced by classical training, in-studio roots, &amp; graduate level
       education in media scoring.
@@ -19,7 +19,7 @@
       I have supported the biggest brands &amp; creators in the world with custom music, music
       clearance, or artist partnerships.
     </p>
-    <p class="cta">Let's work.</p>
+    <p>Let’s work.</p>
     <p class="clients">
       Clients include: Atlantic Records, Audiomack, EightSix, Moosyc, Epidemic Sound, &amp; more.
     </p>
@@ -27,21 +27,22 @@
 </section>
 
 <style>
-  .lede {
-    font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
-    font-weight: 500;
-    line-height: 1.35;
-    letter-spacing: -0.015em;
+  .about {
+    padding-top: 5.4rem;
   }
 
-  .cta {
-    font-weight: 600;
-    color: var(--accent-ink);
+  p + p {
+    margin-top: 0.72em;
   }
 
   .clients {
-    padding-top: 1.25em;
-    border-top: 1px solid var(--rule);
-    color: var(--muted);
+    font-size: clamp(0.75rem, 0.6rem + 0.25vw, 0.88rem);
+    line-height: 1.3;
+  }
+
+  @media (min-width: 768px) {
+    .about {
+      padding-top: 14.4rem;
+    }
   }
 </style>

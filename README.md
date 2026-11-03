@@ -106,7 +106,13 @@ Host-level redirects (`www.superhighway.fm` → `superhighway.fm`, and
 `johnwilliamcleary.com` → `superhighway.fm`) are Cloudflare Redirect Rules,
 set up in the dashboard; see `docs/RUNBOOK.md`.
 
-## Font
+## Design and fonts
 
-Inter (variable, latin subset) is self-hosted from `public/fonts/`, licensed under
-the SIL Open Font License 1.1 (`public/fonts/Inter-OFL.txt`).
+The design mirrors the original Squarespace site: a single `#209d50` green
+field with white type, Instrument Serif for display and Newsreader for text.
+Both fonts are self-hosted from `public/fonts/` (latin subsets) under the SIL
+Open Font License 1.1; see `InstrumentSerif-OFL.txt` and `Newsreader-OFL.txt`.
+
+White on that green is 3.5:1, which passes WCAG AA only for large text. This
+was kept deliberately to match the original; Lighthouse accessibility scores
+95 because of it.
