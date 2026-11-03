@@ -1,0 +1,66 @@
+---
+import { site, social } from '../site';
+
+const sections = [
+  { label: 'about', href: '/#about' },
+  { label: 'services', href: '/#services' },
+  { label: 'contact', href: '/#contact' },
+];
+---
+
+<header class="site-header wrap">
+  <a class="wordmark" href="/">{site.name}</a>
+  <nav aria-label="Main">
+    <ul>
+      {sections.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+    </ul>
+    <ul>
+      {social.map((s) => <li><a href={s.href} rel="me">{s.label}</a></li>)}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding-block: 1.5rem;
+  }
+
+  .wordmark {
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a {
+    display: inline-block;
+    padding-block: 0.25rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--accent-ink);
+    text-decoration: underline;
+  }
+</style>

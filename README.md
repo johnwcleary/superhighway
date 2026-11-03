@@ -56,8 +56,26 @@ pnpm deploy:dry-run
 Runs `wrangler deploy --dry-run` against `wrangler.jsonc` to confirm the Worker
 config and `dist/` upload are valid. It needs no Cloudflare login.
 
-CI (`.github/workflows/ci.yml`) runs install, build, HTML validation and the
-Wrangler dry run on every pull request.
+```bash
+pnpm lighthouse
+```
+
+Runs Lighthouse CI (mobile, 3 runs) against `dist/` and fails if any of
+Performance, Accessibility, Best Practices or SEO is below 95. Reports land in
+`.lighthouseci/reports/`. Needs a local Chrome.
+
+CI (`.github/workflows/ci.yml`) runs install, build, HTML validation, the
+Wrangler dry run and Lighthouse CI on every pull request. The Lighthouse
+reports are attached to the run as an artifact.
+
+## Social card image
+
+`public/og.png` (1200×630) is generated from `public/wordmark-green.png` and
+committed. Regenerate it if the wordmark changes:
+
+```bash
+pnpm og
+```
 
 ## Deploys
 
@@ -68,13 +86,25 @@ configured in `wrangler.jsonc` as an assets-only Worker serving `dist/`.
 ## Layout
 
 ```
-public/            static files copied as-is (font, later: wordmark, favicon, _redirects)
-src/layouts/       Base.astro — <html>/<head> shell
-src/pages/         index.astro (and later 404.astro)
-src/styles/        global.css — tokens, font-face, base type
-astro.config.mjs   static output, site URL
+public/            static files copied as-is: font, wordmark, favicon, og.png,
+                   robots.txt, _redirects
+scripts/           make-og.mjs: generates public/og.png (no dependencies)
+src/site.ts        name, URL, contact details, social links (one place)
+src/components/    Header, Hero, About, Services, Contact, Footer
+src/layouts/       Base.astro: <head> with meta, Open Graph, JSON-LD
+src/pages/         index.astro, 404.astro
+src/styles/        global.css: tokens, font-face, base type
+astro.config.mjs   static output, site URL, sitemap
+lighthouserc.json  Lighthouse CI thresholds (≥ 95 in all four categories)
 wrangler.jsonc     assets-only Worker config
 ```
+
+## Redirects
+
+`public/_redirects` only supports path-based rules on Workers static assets.
+Host-level redirects (`www.superhighway.fm` → `superhighway.fm`, and
+`johnwilliamcleary.com` → `superhighway.fm`) are Cloudflare Redirect Rules,
+set up in the dashboard; see `docs/RUNBOOK.md`.
 
 ## Font
 

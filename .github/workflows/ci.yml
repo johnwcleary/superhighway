@@ -38,3 +38,16 @@ jobs:
         run: pnpm deploy:dry-run
         env:
           WRANGLER_SEND_METRICS: 'false'
+
+      # Mobile Lighthouse against dist/; fails the job if any category < 95.
+      # Reports are kept as a workflow artifact, not uploaded to a public server.
+      - name: Lighthouse CI
+        run: pnpm lighthouse
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports
+          if-no-files-found: ignore

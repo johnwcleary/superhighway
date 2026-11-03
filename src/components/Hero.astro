@@ -1,0 +1,30 @@
+---
+import { site } from '../site';
+---
+
+<section class="hero wrap" aria-labelledby="hero-title">
+  <h1 id="hero-title" class="hero-line">
+    <span>music consulting,</span>
+    <span>music for sync,</span>
+    <span>music strategy.</span>
+  </h1>
+  <p class="byline">by {site.person}</p>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 12vw, 9rem) var(--space-section);
+  }
+
+  h1 span {
+    display: block;
+  }
+
+  .byline {
+    margin-top: clamp(1.25rem, 3vw, 2rem);
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--accent-ink);
+  }
+</style>

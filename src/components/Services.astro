@@ -1,0 +1,35 @@
+---
+const services = [
+  'music strategy for brands & content creators',
+  'artist & brand partnerships',
+  'artist relations for labels/distributors',
+  'a&r',
+  'digital & sync strategy',
+  'music supervision & clearance',
+  'music direction',
+];
+---
+
+<section id="services" class="section wrap" aria-labelledby="services-title">
+  <h2 id="services-title" class="label">services</h2>
+  <ul>
+    {services.map((s) => <li>{s}</li>)}
+  </ul>
+</section>
+
+<style>
+  ul {
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--rule);
+  }
+
+  li {
+    padding-block: 0.875rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.625rem);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+</style>

@@ -33,6 +33,7 @@
   --step-label: 0.8125rem;
 
   --measure: 68ch;
+  --max-page: 80rem;
   --gutter: clamp(1.25rem, 4vw, 3rem);
   --space-section: clamp(4rem, 10vw, 8rem);
 }
@@ -111,15 +112,25 @@ a:hover {
 
 /* Layout primitives */
 
+/* One shared left edge for every block; prose sections cap their line length. */
 .wrap {
   width: 100%;
-  max-width: calc(var(--measure) + 2 * var(--gutter));
+  max-width: calc(var(--max-page) + 2 * var(--gutter));
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-.wrap--wide {
-  max-width: none;
+.section {
+  padding-block: calc(var(--space-section) / 2);
+  scroll-margin-top: 1rem;
+}
+
+.section > * {
+  max-width: var(--measure);
+}
+
+.section > .label {
+  margin-bottom: 1.5rem;
 }
 
 /* Type */
