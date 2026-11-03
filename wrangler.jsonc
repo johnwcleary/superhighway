@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "superhighway",
+  "compatibility_date": "2026-11-03",
+  // Assets-only Worker: no `main`, no bindings. Every request is served from
+  // the free static-asset path.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

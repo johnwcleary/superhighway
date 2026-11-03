@@ -1,0 +1,24 @@
+{
+  "name": "superhighway",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "validate": "html-validate \"dist/**/*.html\"",
+    "deploy:dry-run": "wrangler deploy --dry-run"
+  },
+  "dependencies": {
+    "astro": "7.4.5"
+  },
+  "devDependencies": {
+    "html-validate": "11.18.0",
+    "wrangler": "4.156.1"
+  }
+}
