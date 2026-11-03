@@ -1,0 +1,40 @@
+# Verifies pull requests. Production deploys come from Cloudflare Workers Builds
+# (Git integration), not from this workflow, so no Cloudflare token is needed here.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+
+      - name: Validate HTML
+        run: pnpm validate
+
+      - name: Wrangler dry run
+        run: pnpm deploy:dry-run
+        env:
+          WRANGLER_SEND_METRICS: 'false'
