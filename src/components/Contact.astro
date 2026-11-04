@@ -4,27 +4,65 @@ import { site } from '../site';
 
 <section id="contact" class="contact" aria-label="Contact">
   <h2 class="display"><a href={`mailto:${site.email}`}>Get in Touch.</a></h2>
+  <p class="display"><a href="/portfolio">Portfolio.</a></p>
 </section>
 
 <style>
+  /* The two links mirror each other: same inset from either edge. */
   .contact {
-    padding: 10rem var(--gutter-end) 0 var(--hero-start);
-  }
-
-  h2 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    padding: 10rem var(--gutter-end) 0 var(--gutter);
     font-size: 11.9vw;
   }
 
+  h2,
+  p {
+    font-size: inherit;
+  }
+
+  p {
+    align-self: flex-end;
+  }
+
   a {
+    display: inline-block;
     text-underline-offset: 0.12em;
+  }
+
+  /* On hover an arrow slides in after the link. */
+  a::after {
+    content: '→';
+    display: inline-block;
+    margin-left: 0.15em;
+    opacity: 0;
+    transform: translateX(-0.4em);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  a:hover {
+    opacity: 1;
+  }
+
+  a:hover::after {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Keep the arrow from pushing "Portfolio." off its right edge. */
+  p a::after {
+    position: absolute;
   }
 
   @media (min-width: 768px) {
     .contact {
-      padding-top: 5.5rem;
-    }
-
-    h2 {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 5.5rem var(--hero-start) 0;
       font-size: calc(1rem + 3.6vw);
     }
   }

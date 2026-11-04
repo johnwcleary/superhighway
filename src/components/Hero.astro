@@ -47,10 +47,53 @@ import { site } from '../site';
     white-space: nowrap;
   }
 
+  /* Drift: as the page scrolls, the lines slide apart at different speeds.
+     Uses `translate` so it never fights a `transform`. Phones get a gentler
+     version because the lines there are left-aligned to the margin. */
+  .hero {
+    --drift-1: -4vw;
+    --drift-2: 3vw;
+    --drift-3: -6vw;
+    overflow-x: clip;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      h1 span,
+      .byline {
+        animation: drift linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100vh;
+      }
+
+      .l1 {
+        --drift: var(--drift-1);
+      }
+
+      .l2,
+      .byline {
+        --drift: var(--drift-2);
+      }
+
+      .l3 {
+        --drift: var(--drift-3);
+      }
+    }
+  }
+
+  @keyframes drift {
+    to {
+      translate: var(--drift) 0;
+    }
+  }
+
   /* Wider screens: hang the (scaled-down) block off the right margin so it
      lines up with the header links and the about/services text column. */
   @media (min-width: 768px) {
     .hero {
+      --drift-1: -10vw;
+      --drift-2: 6vw;
+      --drift-3: -18vw;
       padding-top: 5.5rem;
       text-align: right;
     }

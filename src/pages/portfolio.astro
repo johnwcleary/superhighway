@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, portfolio } from '../site';
+---
+
+<Base
+  title={`portfolio · ${site.name}`}
+  description={`Selected work by ${site.person}: ${portfolio.map((p) => p.title).join(', ')}.`}
+  canonicalPath="/portfolio"
+>
+  <Header />
+  <main>
+    <section class="intro" aria-labelledby="portfolio-title">
+      <h1 id="portfolio-title" class="display">Portfolio.</h1>
+    </section>
+
+    {
+      portfolio.map((p) => (
+        <article class="split project">
+          <p class="label">
+            {p.client}
+            {p.year && <span class="meta">{p.year}</span>}
+          </p>
+          <div class="body">
+            <h2 class="display title">{p.href ? <a href={p.href}>{p.title}</a> : p.title}</h2>
+            {p.summary && <p>{p.summary}</p>}
+            {p.results && (
+              <ul class="results">
+                {p.results.map((r) => (
+                  <li>{r}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </article>
+      ))
+    }
+
+    <p class="back display"><a href="/">← superhighway</a></p>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .intro {
+    padding: 4.6rem var(--gutter-end) 0 var(--hero-start);
+  }
+
+  h1 {
+    font-size: 23vw;
+  }
+
+  .project {
+    padding-top: 4.5rem;
+  }
+
+  .project > .label {
+    margin-bottom: 1rem;
+  }
+
+  .label .meta {
+    display: block;
+    font-weight: 400;
+  }
+
+  .title {
+    margin-bottom: 0.3em;
+    font-size: clamp(2.6rem, 1.5rem + 3.6vw, 4.6rem);
+  }
+
+  .title a {
+    text-underline-offset: 0.12em;
+  }
+
+  .results {
+    margin-top: 0.9em;
+    font-size: clamp(0.88rem, 0.75rem + 0.25vw, 1rem);
+    line-height: 1.4;
+  }
+
+  .results li + li {
+    margin-top: 0.2em;
+  }
+
+  .back {
+    padding: 6rem var(--gutter-end) 0 var(--hero-start);
+    font-size: calc(1rem + 3.6vw);
+  }
+
+  .back a {
+    text-decoration: none;
+  }
+
+  @media (min-width: 768px) {
+    .intro {
+      padding-top: 5.5rem;
+      text-align: right;
+    }
+
+    h1 {
+      font-size: 16vw;
+    }
+
+    .project {
+      padding-top: 7rem;
+    }
+  }
+</style>
